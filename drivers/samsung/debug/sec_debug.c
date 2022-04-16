@@ -251,6 +251,20 @@ static enum pon_restart_reason __pon_restart_dump_sink(
 	return PON_RESTART_REASON_UNKNOWN;
 }
 
+static enum pon_restart_reason __pon_restart_cdsp_signoff(
+				unsigned long opt_code)
+{
+	switch (opt_code) {
+	case CDSP_SIGNOFF_ON:
+		return PON_RESTART_REASON_CDSP_ON;
+	case CDSP_SIGNOFF_BLOCK:
+		return PON_RESTART_REASON_CDSP_BLOCK;
+	}
+
+	return PON_RESTART_REASON_UNKNOWN;
+}
+
+
 #ifdef CONFIG_MUIC_SUPPORT_RUSTPROOF
 static enum pon_restart_reason __pon_restart_swsel(
 				unsigned long opt_code)
@@ -386,6 +400,9 @@ void sec_debug_update_restart_reason(const char *cmd, const int in_panic,
 		{ "dump_sink",
 			PON_RESTART_REASON_UNKNOWN,
 			RESTART_REASON_NORMAL, __pon_restart_dump_sink},
+		{ "signoff",
+			PON_RESTART_REASON_UNKNOWN,
+			RESTART_REASON_NORMAL, __pon_restart_cdsp_signoff},
 		{ "cross_fail",
 			PON_RESTART_REASON_CROSS_FAIL,
 			RESTART_REASON_NORMAL, NULL},
